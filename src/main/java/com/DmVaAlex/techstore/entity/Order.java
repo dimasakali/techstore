@@ -4,13 +4,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import org.apache.catalina.User;
-
 import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "orders")
 public class Order {
@@ -20,6 +17,7 @@ public class Order {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToMany
@@ -30,5 +28,5 @@ public class Order {
     )
     private List<Product> products;
 
-    private double totalPrice;
+    private Double totalPrice;
 }
