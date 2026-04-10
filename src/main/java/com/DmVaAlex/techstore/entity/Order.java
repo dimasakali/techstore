@@ -1,13 +1,8 @@
 package com.DmVaAlex.techstore.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
 @Entity
 @Table(name = "orders")
 public class Order {
@@ -29,4 +24,13 @@ public class Order {
     private List<Product> products;
 
     private Double totalPrice;
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
+    public List<Product> getProducts() { return products; }
+    public void setProducts(List<Product> products) { this.products = products; }
+    public Double getTotalPrice() { return totalPrice; }
+    public void setTotalPrice(Double totalPrice) { this.totalPrice = totalPrice; }
 }
