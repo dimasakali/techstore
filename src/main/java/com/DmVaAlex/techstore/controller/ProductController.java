@@ -2,6 +2,7 @@ package com.DmVaAlex.techstore.controller;
 
 import com.DmVaAlex.techstore.entity.Product;
 import com.DmVaAlex.techstore.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +27,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> create(@RequestBody Product product) {
+    public ResponseEntity<Product> create(@Valid @RequestBody Product product) {
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.create(product));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody Product product) {
+    public ResponseEntity<Product> update(@PathVariable Long id, @Valid @RequestBody Product product) {
         return ResponseEntity.ok(productService.update(id, product));
     }
 
