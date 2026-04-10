@@ -1,8 +1,7 @@
 package com.DmVaAlex.techstore.controller;
 
 import com.DmVaAlex.techstore.entity.Product;
-import com.DmVaAlex.techstore.exception.ProductNotFoundException;
-import com.DmVaAlex.techstore.repository.ProductRepository;
+import com.DmVaAlex.techstore.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,38 +13,31 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
 
-    private final ProductRepository productRepository;
+    private final ProductService productService;
 
     @GetMapping
     public ResponseEntity<List<Product>> getAll() {
-        return ResponseEntity.ok(productRepository.findAll());
+        return ResponseEntity.ok(productService.getAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getById(@PathVariable Long id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException(id));
-        return ResponseEntity.ok(product);
+        return ResponseEntity.ok(productService.getById(id));
     }
 
     @PostMapping
     public ResponseEntity<Product> create(@RequestBody Product product) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(productRepository.save(product));
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.create(product));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody Product product) {
-        productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException(id));
-        product.setId(id);
-        return ResponseEntity.ok(productRepository.save(product));
+        return ResponseEntity.ok(productService.update(id, product));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException(id));
-        productRepository.deleteById(id);
+        productService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

@@ -1,7 +1,7 @@
 package com.DmVaAlex.techstore.controller;
 
 import com.DmVaAlex.techstore.entity.Category;
-import com.DmVaAlex.techstore.repository.CategoryRepository;
+import com.DmVaAlex.techstore.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,38 +13,31 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryController {
 
-    private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
 
     @GetMapping
     public ResponseEntity<List<Category>> getAll() {
-        return ResponseEntity.ok(categoryRepository.findAll());
+        return ResponseEntity.ok(categoryService.getAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Category> getById(@PathVariable Long id) {
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Категория с id " + id + " не найдена"));
-        return ResponseEntity.ok(category);
+        return ResponseEntity.ok(categoryService.getById(id));
     }
 
     @PostMapping
     public ResponseEntity<Category> create(@RequestBody Category category) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(categoryRepository.save(category));
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.create(category));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Category> update(@PathVariable Long id, @RequestBody Category category) {
-        Category existing = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Категория с id " + id + " не найдена"));
-        existing.setName(category.getName());
-        return ResponseEntity.ok(categoryRepository.save(existing));
+        return ResponseEntity.ok(categoryService.update(id, category));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Категория с id " + id + " не найдена"));
-        categoryRepository.deleteById(id);
+        categoryService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }
